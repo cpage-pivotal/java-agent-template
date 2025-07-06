@@ -15,8 +15,9 @@ class WriteAndReviewAgentTest {
     @Test
     void testWriteAndReviewAgent() {
         var agent = new WriteAndReviewAgent(200, 400);
+        var context = FakeOperationContext.create();
         var llmCall = UnitTestUtils.captureLlmCall(() -> {
-            agent.craftStory(new UserInput("Tell me a story about a brave knight", Instant.now()));
+            agent.craftStory(new UserInput("Tell me a story about a brave knight", Instant.now()), context);
         });
         assertTrue(llmCall.getPrompt().contains("knight"), "Expected prompt to contain 'knight'");
         assertEquals(0.9, llmCall.getLlm().getTemperature(), 0.01,

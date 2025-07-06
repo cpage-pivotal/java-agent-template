@@ -19,7 +19,6 @@ import com.embabel.agent.api.annotation.AchievesGoal;
 import com.embabel.agent.api.annotation.Action;
 import com.embabel.agent.api.annotation.Agent;
 import com.embabel.agent.api.common.OperationContext;
-import com.embabel.agent.api.common.PromptRunner;
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.agent.domain.library.HasContent;
 import com.embabel.agent.prompt.persona.Persona;
@@ -136,8 +135,8 @@ class WriteAndReviewAgent {
     }
 
     @Action
-    Story craftStory(UserInput userInput) {
-        return PromptRunner.usingLlm(
+    Story craftStory(UserInput userInput, OperationContext context) {
+        return context.promptRunner().withLlm(
                  LlmOptions.fromCriteria(AutoModelSelectionCriteria.INSTANCE)
                         .withTemperature(0.9) // Higher temperature for more creative output
         ).withPromptContributor(Personas.WRITER)
